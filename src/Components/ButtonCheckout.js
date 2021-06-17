@@ -1,7 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import styled from 'styled-components';
 
-const Button = styled.button`
+export const ButtonCheckout = styled.button`
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -22,9 +22,3 @@ const Button = styled.button`
         color: #299B01;
     }
 `;
-
-export const AddCartButton = () => (
-    <Button>
-        Добавить
-    </Button>
-)
