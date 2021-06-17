@@ -40,16 +40,18 @@ const Item = styled.li`
     }
 `;
 
-export const ListItem = ({itemList}) => (
-    <List>
-        {itemList.map(item => (
-            <Item key={item.id} img={item.img}>
-              <p>{item.name}</p>
-              <p>{item.price.toLocaleString('ru-RU', {
-                  style: 'currency',
-                  currency: 'RUB'
-              })}</p>
-            </Item>
-        ))}
-    </List>
-)
+export const ListItem = ({itemList, setOpenItem}) => {
+    return (
+        <List>
+            {itemList.map(item => (
+                <Item key={item.id} img={item.img} onClick={() => setOpenItem(item)}>
+                <p>{item.name}</p>
+                <p>{item.price.toLocaleString('ru-RU', {
+                    style: 'currency',
+                    currency: 'RUB'
+                })}</p>
+                </Item>
+            ))}
+        </List>
+    )
+}

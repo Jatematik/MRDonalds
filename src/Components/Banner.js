@@ -8,5 +8,5 @@ const BannerImage = styled.img`
     object-fit: cover;
 `;
 export const Banner = () => (
-    <BannerImage src={banner}/>
+    <BannerImage src={banner} alt="banner"/>
 )
