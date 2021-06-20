@@ -44,15 +44,22 @@ const BurgerInfo = styled.div`
     font-family: Pacifico, sans-serif;
 `;
 
-export const ModalItem = ({ openItem, setOpenItem }) => {
+export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
-    function closeModal(e) {
+    const closeModal = e => {
         if (e.target.id === 'overlay') {
             setOpenItem(null);
         }
     }
 
-    if (!openItem) return null;
+    const order = {
+        ...openItem
+    };
+
+    const addToOrder = () => {
+        setOrders([...orders, order]);
+        setOpenItem(null);
+    }
 
     return (
         <Overlay id="overlay" onClick={closeModal}>
@@ -68,7 +75,7 @@ export const ModalItem = ({ openItem, setOpenItem }) => {
                         </span>
                     </BurgerInfo>
                 </div>
-                <ButtonCheckout>
+                <ButtonCheckout onClick={addToOrder}>
                     Добавить
                 </ButtonCheckout>
             </Modal>
