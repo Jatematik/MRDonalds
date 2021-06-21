@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonCheckout } from './ButtonCheckout';
+import { ButtonCheckout } from '../Style/ButtonCheckout';
+import { CountItem } from './CountItem';
+import { useCount } from '../Hooks/useCount';
+import secondaryFunction from '../Functions/secondaryFunction';
 
 const Overlay = styled.div`
     position: fixed;
@@ -44,7 +47,17 @@ const BurgerInfo = styled.div`
     font-family: Pacifico, sans-serif;
 `;
 
+const TotalPriceItem = styled.div`
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+`;
+
+export const TotalPriceItems = order => order.price * order.count;
+
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
+
+    const counter = useCount();
 
     const closeModal = e => {
         if (e.target.id === 'overlay') {
@@ -53,7 +66,8 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
     }
 
     const order = {
-        ...openItem
+        ...openItem,
+        count: counter.count
     };
 
     const addToOrder = () => {
@@ -68,13 +82,14 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
                     <Banner img={openItem.img}/>
                     <BurgerInfo>
                         <span>{openItem.name}</span>
-                        <span>{openItem.price.toLocaleString('ru-RU', {
-                            style: 'currency',
-                            currency: 'RUB'
-                        })}
-                        </span>
+                        <span>{secondaryFunction(openItem.price)}</span>
                     </BurgerInfo>
                 </div>
+                <CountItem {...counter}/>
+                <TotalPriceItem>
+                    <span>Цена:</span>
+                    <span>{secondaryFunction(TotalPriceItems(order))}</span>
+                </TotalPriceItem>
                 <ButtonCheckout onClick={addToOrder}>
                     Добавить
                 </ButtonCheckout>
