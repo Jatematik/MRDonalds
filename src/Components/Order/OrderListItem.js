@@ -48,17 +48,17 @@ const ItemTopping = styled.span`
     color: #9A9A9A;
 `;
 
-export const OrderListItem = ({order, setOrders, orders}) => {
-
-    function deleteItem(order) {
-        const newOrders = orders.filter(item => item.id !== order.id);
-        return setOrders(newOrders);
-    }
+export const OrderListItem = ({order, deleteItem, index, setOpenItem }) => {
 
     const topping = order.topping.filter(item => item.checked).map(item => item.name).join(', ').toLowerCase();
 
     return (
-        <OrderItemStyled>
+        <OrderItemStyled onClick={(e) => {
+            if (e.target.id === 'delete-item') {
+                return;
+            }
+            setOpenItem({...order, index});
+        }}>
             <ItemWrapper>
                 <ItemName>{order.name} {order.choice}</ItemName>
                 {topping && <ItemToppingWrap>
@@ -68,7 +68,7 @@ export const OrderListItem = ({order, setOrders, orders}) => {
             <div style={{display: 'flex'}}>
                 <span style={{marginLeft: '5px'}}>{order.count}</span>
                 <ItemPrice>{formatCurrency(TotalPriceItems(order))}</ItemPrice>
-                <TrashButton onClick={()=>deleteItem(order)}/>
+                <TrashButton onClick={()=>deleteItem(index)} id="delete-item"/>
             </div>
         </OrderItemStyled>
     )

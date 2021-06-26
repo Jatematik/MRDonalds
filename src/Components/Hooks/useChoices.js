@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-export function useChoices() {
+export function useChoices(openItem) {
 
-    // const readyChoise = openItem.choices ? openItem.choices : [];
-
-    const [choice, setChoice] = useState();
+    const [choice, setChoice] = useState(openItem.choice && openItem.choice);
 
     function changeChoices(item){
         setChoice(item);

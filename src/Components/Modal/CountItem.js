@@ -15,7 +15,7 @@ const ButtonCount = styled.button`
     background-color: transparent;
 `;
 
-export function CountItem({ count, setCount, onChange }){
+export function CountItem({ count, setCount, onChange, openItem, order }){
 
     return (
         <CountWrapper>

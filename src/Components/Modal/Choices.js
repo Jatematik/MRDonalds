@@ -18,7 +18,7 @@ const ChoiceLabel = styled.label`
     display: block;
 `;
 
-export function Choices({ changeChoices, openItem, choice }){
+export function Choices({ changeChoices, openItem, choice, order }){
 
     return (
         <>
@@ -29,11 +29,7 @@ export function Choices({ changeChoices, openItem, choice }){
                         <ChoiceRadio 
                             type="radio" 
                             name="choices" 
-                            // checked={choice.forEach(choiceItem => {
-                            //     if (choiceItem === item) {
-                            //         return;
-                            //     }
-                            // })}
+                            checked={choice === item}
                             value={item} 
                             onChange={() => changeChoices(item)}/>
                         {item}

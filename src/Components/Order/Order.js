@@ -50,7 +50,12 @@ const EmptyList = styled.p`
     text-align: center;
 `;
 
-export const Order = ({ orders, setOrders }) => {
+export const Order = ({ orders, setOrders, setOpenItem }) => {
+
+    const deleteItem = (index) => {
+        const newOrders = orders.filter((item, i) => index !== i); //либо методом splice
+        setOrders(newOrders);
+    }
 
     const total = orders.reduce((result, order) => {
         return TotalPriceItems(order) + result;
@@ -67,7 +72,12 @@ export const Order = ({ orders, setOrders }) => {
         </OrderTitle>
         <OrderContent>
             {orders.length ? <OrderList>
-                {orders.map(order => <OrderListItem order={order} orders={orders} setOrders={setOrders} key={order.id}/>)}
+                {orders.map((order, index) => <OrderListItem 
+                    order={order} 
+                    deleteItem={deleteItem}
+                    key={index}
+                    index={index}
+                    setOpenItem={setOpenItem}/>)}
             </OrderList> : <EmptyList>Список заказов пуст</EmptyList>}
         </OrderContent>
         <Total>

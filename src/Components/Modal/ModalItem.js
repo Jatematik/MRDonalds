@@ -65,9 +65,10 @@ const BlockInfo = styled.div`
 
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
-    const counter = useCount();
+    const counter = useCount(openItem);
     const toppings = useToppings(openItem);
     const choices = useChoices(openItem);
+    const isEdit = openItem.index > -1;
 
     const closeModal = e => {
         if (e.target.id === 'overlay') {
@@ -81,6 +82,13 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
         topping: toppings.toppings,
         choice: choices.choice
     };
+
+    const editOrder = () => {
+        const newOrders = [...orders];
+        newOrders[openItem.index] = order;
+        setOrders(newOrders);
+        setOpenItem(null);
+    }
 
     const addToOrder = () => {
         setOrders([...orders, order]);
@@ -96,15 +104,15 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
                         <span>{openItem.name}</span>
                         <span>{formatCurrency(openItem.price)}</span>
                     </BurgerInfo>
-                    <CountItem {...counter}/>
+                    <CountItem {...counter} openItem={openItem} order={order}/>
                     {openItem.toppings && <Toppings {...toppings}/>}
-                    {openItem.choices && <Choices {...choices} openItem={openItem}/>}
+                    {openItem.choices && <Choices {...choices} openItem={openItem} order={order}/>}
                     <TotalPriceItem>
                         <span>Цена:</span>
                         <span>{formatCurrency(TotalPriceItems(order))}</span>
                     </TotalPriceItem>
-                    <ButtonCheckout onClick={addToOrder} disabled={order.choices && !order.choice}>
-                        Добавить
+                    <ButtonCheckout onClick={isEdit ? editOrder : addToOrder} disabled={order.choices && !order.choice}>
+                        {isEdit ? 'Редактировать' : 'Добавить'}
                     </ButtonCheckout>
                 </BlockInfo>
             </Modal>
