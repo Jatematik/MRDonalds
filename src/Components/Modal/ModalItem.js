@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { ButtonCheckout } from '../Style/ButtonCheckout';
 import { CountItem } from './CountItem';
 import { useCount } from '../Hooks/useCount';
-import secondaryFunction from '../Functions/secondaryFunction';
+import { formatCurrency } from '../Functions/secondaryFunction';
+import { Toppings } from './Toppings';
+import { useToppings } from '../Hooks/useToppings';
+import { TotalPriceItems } from '../Functions/secondaryFunction';
 
 const Overlay = styled.div`
     position: fixed;
@@ -22,7 +25,6 @@ const Modal = styled.div`
     padding-bottom: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 600px;
     height: 600px;
     background-color: #fff;
@@ -38,7 +40,6 @@ const Banner = styled.div`
 `;
 
 const BurgerInfo = styled.div`
-    padding: 0 20px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,16 +49,22 @@ const BurgerInfo = styled.div`
 `;
 
 const TotalPriceItem = styled.div`
-    padding: 0 20px;
     display: flex;
     justify-content: space-between;
 `;
 
-export const TotalPriceItems = order => order.price * order.count;
+const BlockInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    padding: 0 20px;
+`;
 
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
     const counter = useCount();
+    const toppings = useToppings(openItem);
 
     const closeModal = e => {
         if (e.target.id === 'overlay') {
@@ -67,7 +74,8 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
     const order = {
         ...openItem,
-        count: counter.count
+        count: counter.count,
+        topping: toppings.toppings
     };
 
     const addToOrder = () => {
@@ -78,21 +86,22 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
     return (
         <Overlay id="overlay" onClick={closeModal}>
             <Modal>
-                <div>
-                    <Banner img={openItem.img}/>
+                <Banner img={openItem.img}/>
+                <BlockInfo>
                     <BurgerInfo>
                         <span>{openItem.name}</span>
-                        <span>{secondaryFunction(openItem.price)}</span>
+                        <span>{formatCurrency(openItem.price)}</span>
                     </BurgerInfo>
-                </div>
-                <CountItem {...counter}/>
-                <TotalPriceItem>
-                    <span>Цена:</span>
-                    <span>{secondaryFunction(TotalPriceItems(order))}</span>
-                </TotalPriceItem>
-                <ButtonCheckout onClick={addToOrder}>
-                    Добавить
-                </ButtonCheckout>
+                    <CountItem {...counter}/>
+                    {openItem.toppings && <Toppings {...toppings}/>}
+                    <TotalPriceItem>
+                        <span>Цена:</span>
+                        <span>{formatCurrency(TotalPriceItems(order))}</span>
+                    </TotalPriceItem>
+                    <ButtonCheckout onClick={addToOrder}>
+                        Добавить
+                    </ButtonCheckout>
+                </BlockInfo>
             </Modal>
         </Overlay>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import secondaryFunction from '../Functions/secondaryFunction';
+import { formatCurrency } from '../Functions/secondaryFunction';
 
 const List = styled.ul`
     display: flex;
@@ -47,7 +47,7 @@ export const ListItem = ({itemList, setOpenItem}) => {
             {itemList.map(item => (
                 <Item key={item.id} img={item.img} onClick={() => setOpenItem(item)}>
                 <p>{item.name}</p>
-                <p>{secondaryFunction(item.price)}</p>
+                <p>{formatCurrency(item.price)}</p>
                 </Item>
             ))}
         </List>

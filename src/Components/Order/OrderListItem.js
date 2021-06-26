@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import trashImage from '../../images/trash.svg';
-import { TotalPriceItems } from '../Modal/ModalItem';
-import secondaryFunction from '../Functions/secondaryFunction';
+import { TotalPriceItems } from '../Functions/secondaryFunction';
+import { formatCurrency } from '../Functions/secondaryFunction';
 
 const TrashButton = styled.button`
     width: 24px;
@@ -31,11 +31,40 @@ const ItemPrice = styled.span`
     text-align: center;
 `;
 
-export const OrderListItem = ({order}) => (
-    <OrderItemStyled>
-        <ItemName>{order.name}</ItemName>
-        <span>{order.count}</span>
-        <ItemPrice>{secondaryFunction(TotalPriceItems(order))}</ItemPrice>
-        <TrashButton/>
-    </OrderItemStyled>
-);
+const ItemWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+`;
+
+const ItemToppingWrap = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+const ItemTopping = styled.span`
+    font-size: 14px;
+    line-height: 16px;
+    color: #9A9A9A;
+`;
+
+export const OrderListItem = ({order}) => {
+
+    const topping = order.topping.filter(item => item.checked).map(item => item.name).join(', ').toLowerCase();
+
+    return (
+        <OrderItemStyled>
+            <ItemWrapper>
+                <ItemName>{order.name}</ItemName>
+                {topping && <ItemToppingWrap>
+                    <ItemTopping>{topping}</ItemTopping>
+                </ItemToppingWrap>}
+            </ItemWrapper>
+            <div style={{display: 'flex'}}>
+                <span style={{marginLeft: '5px'}}>{order.count}</span>
+                <ItemPrice>{formatCurrency(TotalPriceItems(order))}</ItemPrice>
+                <TrashButton/>
+            </div>
+        </OrderItemStyled>
+    )
+};

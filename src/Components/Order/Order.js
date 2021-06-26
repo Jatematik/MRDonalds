@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { ButtonCheckout } from '../Style/ButtonCheckout';
 import { OrderListItem } from './OrderListItem';
-import { TotalPriceItems } from '../Modal/ModalItem';
+import { TotalPriceItems } from '../Functions/secondaryFunction';
+import { formatCurrency } from '../Functions/secondaryFunction';
 
 const OrderStyled = styled.section`
     position: fixed;
@@ -11,7 +12,7 @@ const OrderStyled = styled.section`
     top: 80px;
     left: 0;
     background: #fff;
-    min-width: 380px;
+    width: 380px;
     height: calc(100% - 80px);
     box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.25);
     padding: 20px;
@@ -74,7 +75,7 @@ export const Order = ({ orders }) => {
             <span>
                 {totalQuantity}
             </span>
-            <TotalPrice>{total}</TotalPrice>
+            <TotalPrice>{formatCurrency(total)}</TotalPrice>
         </Total>
         <ButtonCheckout>Оформить</ButtonCheckout>
     </OrderStyled>
